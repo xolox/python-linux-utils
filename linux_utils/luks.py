@@ -140,7 +140,7 @@ def create_encrypted_filesystem(device_file, key_file=None, context=None):
     context.execute(*format_command, sudo=True, tty=(key_file is None))
 
 
-def unlock_filesystem(device_file, target, key_file=None, context=None):
+def unlock_filesystem(device_file, target, key_file=None, options=None, context=None):
     """
     Unlock an encrypted LUKS filesystem.
 
@@ -148,6 +148,11 @@ def unlock_filesystem(device_file, target, key_file=None, context=None):
     :param target: The mapped device name (a string).
     :param key_file: The pathname of the key file used to encrypt the
                      filesystem (a string or :data:`None`).
+    :param options: An iterable of strings with encryption options
+                    or :data:`None` (in which case the default
+                    encryption options are used). Currently 'discard' and
+                    'readonly' are the only supported options (other options
+                    are silently ignored).
     :param context: An execution context created by :mod:`executor.contexts`
                     (coerced using :func:`.coerce_context()`).
     :raises: :exc:`~executor.ExternalCommandFailed` when the command fails.
@@ -157,6 +162,11 @@ def unlock_filesystem(device_file, target, key_file=None, context=None):
     context = coerce_context(context)
     logger.debug("Unlocking filesystem %s ..", device_file)
     open_command = ['cryptsetup']
+    if options:
+        if 'discard' in options:
+            open_command.append('--allow-discards')
+        if 'readonly' in options:
+            open_command.append('--readonly')
     if key_file:
         open_command.append('--key-file=%s' % key_file)
     open_command.extend(['luksOpen', device_file, target])
@@ -205,6 +215,7 @@ def cryptdisks_start(target, context=None):
                     unlock_filesystem(context=context,
                                       device_file=entry.source_device,
                                       key_file=entry.key_file,
+                                      options=entry.options,
                                       target=entry.target)
                 break
         else:
