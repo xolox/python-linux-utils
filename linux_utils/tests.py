@@ -242,7 +242,7 @@ class LinuxUtilsTestCase(unittest.TestCase):
 
         This test requires the following line to be present in ``/etc/crypttab``::
 
-         linux-utils /tmp/linux-utils.img /tmp/linux-utils.key luks,noauto
+         linux-utils /tmp/linux-utils.img /tmp/linux-utils.key discard,luks,noauto,readonly,tries=1
         """
         if not any(entry.target == TEST_TARGET_NAME and
                    entry.source == TEST_IMAGE_FILE and

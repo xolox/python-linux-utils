@@ -58,7 +58,7 @@ The functions in this module serve two distinct purposes:
 import logging
 
 # External dependencies.
-from executor import quote
+from executor import ExternalCommandFailed, quote
 
 # Modules included in our package.
 from linux_utils import coerce_context, coerce_size
@@ -148,11 +148,10 @@ def unlock_filesystem(device_file, target, key_file=None, options=None, context=
     :param target: The mapped device name (a string).
     :param key_file: The pathname of the key file used to encrypt the
                      filesystem (a string or :data:`None`).
-    :param options: An iterable of strings with encryption options
-                    or :data:`None` (in which case the default
-                    encryption options are used). Currently 'discard' and
-                    'readonly' are the only supported options (other options
-                    are silently ignored).
+    :param options: An iterable of strings with encryption options or
+                    :data:`None` (in which case the default options are used).
+                    Currently 'discard', 'readonly' and 'tries' are the only
+                    supported options (other options are silently ignored).
     :param context: An execution context created by :mod:`executor.contexts`
                     (coerced using :func:`.coerce_context()`).
     :raises: :exc:`~executor.ExternalCommandFailed` when the command fails.
@@ -161,16 +160,33 @@ def unlock_filesystem(device_file, target, key_file=None, options=None, context=
     """
     context = coerce_context(context)
     logger.debug("Unlocking filesystem %s ..", device_file)
+    tries = 3
     open_command = ['cryptsetup']
-    if options:
-        if 'discard' in options:
-            open_command.append('--allow-discards')
-        if 'readonly' in options:
-            open_command.append('--readonly')
+    open_options = []
     if key_file:
-        open_command.append('--key-file=%s' % key_file)
+        open_options.append('--key-file=%s' % key_file)
+    if options:
+        for opt in options:
+            if opt == 'discard':
+                open_options.append('--allow-discards')
+            elif opt == 'readonly':
+                open_options.append('--readonly')
+            elif opt.startswith('tries='):
+                name, _, value = opt.partition('=')
+                tries = int(value)
+    open_command.extend(sorted(open_options))
     open_command.extend(['luksOpen', device_file, target])
-    context.execute(*open_command, sudo=True, tty=(key_file is None))
+    for attempt in range(1, tries + 1):
+        try:
+            context.execute(*open_command, sudo=True, tty=(key_file is None))
+        except ExternalCommandFailed:
+            if attempt < tries and not key_file:
+                logger.warning("Failed to unlock, retrying ..")
+                continue
+            else:
+                raise
+        else:
+            break
 
 
 def lock_filesystem(target, context=None):

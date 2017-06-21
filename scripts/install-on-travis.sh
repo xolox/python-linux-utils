@@ -38,5 +38,5 @@ fi
 
 # Append our crypto device to /etc/crypttab.
 sudo tee -a /etc/crypttab >/dev/null << EOF
-linux-utils /tmp/linux-utils.img /tmp/linux-utils.key luks,noauto
+linux-utils /tmp/linux-utils.img /tmp/linux-utils.key discard,luks,noauto,readonly,tries=1
 EOF
