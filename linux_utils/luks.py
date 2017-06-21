@@ -197,7 +197,7 @@ def cryptdisks_start(target, context=None):
     else:
         logger.debug("Emulating `cryptdisks_start' functionality (program not installed) ..")
         for entry in parse_crypttab(context=context):
-            if entry.target == target:
+            if entry.target == target and 'luks' in entry.options:
                 logger.debug("Matched /etc/crypttab entry: %s", entry)
                 if entry.is_unlocked:
                     logger.debug("Encrypted filesystem is already unlocked, doing nothing ..")
@@ -233,7 +233,7 @@ def cryptdisks_stop(target, context=None):
     else:
         logger.debug("Emulating `cryptdisks_stop' functionality (program not installed) ..")
         for entry in parse_crypttab(context=context):
-            if entry.target == target:
+            if entry.target == target and 'luks' in entry.options:
                 logger.debug("Matched /etc/crypttab entry: %s", entry)
                 if entry.is_unlocked:
                     lock_filesystem(context=context, target=target)
