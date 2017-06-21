@@ -7,10 +7,13 @@
 """Linux system administration tools for Python."""
 
 # Standard library modules.
+import numbers
 import os
 
 # External dependencies.
 from executor.contexts import AbstractContext, LocalContext
+from humanfriendly import parse_size
+from six import string_types
 
 __version__ = '0.1'
 """Semi-standard module versioning."""
@@ -71,3 +74,20 @@ def coerce_device_file(expression):
             msg = "Unsupported device identifier! (%r)"
             raise ValueError(msg % name)
     return expression
+
+
+def coerce_size(value):
+    """
+    Coerce a human readable data size to the number of bytes.
+
+    :param value: The value to coerce (a number or string).
+    :returns: The number of bytes (a number).
+    :raises: :exc:`~exceptions.ValueError` when `value` isn't a number or
+             a string supported by :func:`~humanfriendly.parse_size()`.
+    """
+    if isinstance(value, string_types):
+        value = parse_size(value)
+    if not isinstance(value, numbers.Number):
+        msg = "Unsupported data size! (%r)"
+        raise ValueError(msg % value)
+    return value

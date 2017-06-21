@@ -29,6 +29,12 @@ the `linux-utils` package.
 .. automodule:: linux_utils.fstab
    :members:
 
+:mod:`linux_utils.luks`
+-----------------------
+
+.. automodule:: linux_utils.luks
+   :members:
+
 :mod:`linux_utils.tabfile`
 --------------------------
 

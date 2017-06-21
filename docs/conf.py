@@ -70,6 +70,7 @@ pygments_style = 'sphinx'
 intersphinx_mapping = dict(
     python=('https://docs.python.org/2', None),
     executor=('https://executor.readthedocs.io/en/latest/', None),
+    humanfriendly=('https://humanfriendly.readthedocs.io/en/latest/', None),
     propertymanager=('https://property-manager.readthedocs.io/en/latest/', None),
 )
 
