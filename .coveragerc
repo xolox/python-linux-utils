@@ -1,0 +1,3 @@
+[run]
+source = linux_utils
+omit = linux_utils/tests.py

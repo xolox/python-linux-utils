@@ -1,0 +1,36 @@
+.. include:: ../README.rst
+
+API documentation
+=================
+
+The following documentation is based on the source code of version |release| of
+the `linux-utils` package.
+
+**Available modules**
+
+.. contents::
+   :local:
+
+:mod:`linux_utils`
+------------------
+
+.. automodule:: linux_utils
+   :members:
+
+:mod:`linux_utils.crypttab`
+---------------------------
+
+.. automodule:: linux_utils.crypttab
+   :members:
+
+:mod:`linux_utils.fstab`
+------------------------
+
+.. automodule:: linux_utils.fstab
+   :members:
+
+:mod:`linux_utils.tabfile`
+--------------------------
+
+.. automodule:: linux_utils.tabfile
+   :members:
