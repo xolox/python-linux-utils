@@ -87,9 +87,14 @@ class LinuxUtilsTestCase(unittest.TestCase):
     def test_coerce_device_file(self):
         """Test coercion of device identifiers to device files."""
         assert coerce_device_file('/dev/mapper/backups') == '/dev/mapper/backups'
+        assert (coerce_device_file('LABEL="Linux Boot"') ==
+                r'/dev/disk/by-label/Linux\x20Boot')
         assert (coerce_device_file('UUID=1012dd1a-a455-40c4-914f-f3b1b2cf5b86') ==
                 '/dev/disk/by-uuid/1012dd1a-a455-40c4-914f-f3b1b2cf5b86')
-        self.assertRaises(ValueError, coerce_device_file, 'LABEL=test')
+        self.assertRaises(
+            ValueError, coerce_device_file,
+            'PARTUUID=e6c021cc-d0d8-400c-8f5c-b10adeff65fe',
+        )
 
     def test_coerce_size(self):
         """Test coercion of data sizes."""

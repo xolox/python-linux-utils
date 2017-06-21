@@ -9,6 +9,7 @@
 # Standard library modules.
 import numbers
 import os
+import shlex
 
 # External dependencies.
 from executor.contexts import AbstractContext, LocalContext
@@ -38,7 +39,7 @@ def coerce_context(value):
 
 
 def coerce_device_file(expression):
-    """
+    r"""
     Coerce a device identifier to a device file.
 
     :param expression: The device identifier (a string).
@@ -46,12 +47,15 @@ def coerce_device_file(expression):
     :raises: :exc:`~exceptions.ValueError` when an unsupported device
              identifier is encountered.
 
-    If you pass in a ``UUID=...`` expression (as found in e.g. ``/etc/fstab``)
-    you will get back a pathname starting with ``/dev/disk/by-uuid``:
+    If you pass in a ``LABEL="..."`` or ``UUID=...`` expression (as found
+    in e.g. ``/etc/fstab``) you will get back a pathname starting with
+    ``/dev/disk/by-label`` or ``/dev/disk/by-uuid``:
 
     >>> from linux_utils import coerce_device_file
-    >>> coerce_device_file('UUID=7801a1c2-7ad7-4c0b-9fbb-2a47ae802f71')
-    '/dev/disk/by-uuid/7801a1c2-7ad7-4c0b-9fbb-2a47ae802f71'
+    >>> print(coerce_device_file('LABEL="Linux Boot"'))
+    /dev/disk/by-label/Linux\x20Boot
+    >>> print(coerce_device_file('UUID=7801a1c2-7ad7-4c0b-9fbb-2a47ae802f71'))
+    /dev/disk/by-uuid/7801a1c2-7ad7-4c0b-9fbb-2a47ae802f71
 
     If `expression` is already a pathname it will pass through untouched:
 
@@ -60,19 +64,30 @@ def coerce_device_file(expression):
 
     Unsupported device identifiers raise an exception:
 
-    >>> coerce_device_file('LABEL=backups')
+    >>> coerce_device_file('PARTUUID=e6c021cc-d0d8-400c-8f5c-b10adeff65fe')
     Traceback (most recent call last):
-      File "linux_utils/__init__.py", line 34, in coerce_device_file
-        raise ValueError(msg % name)
-    ValueError: Unsupported device identifier! ('LABEL')
+      File "linux_utils/__init__.py", line 90, in coerce_device_file
+        raise ValueError(msg % expression)
+    ValueError: Unsupported device identifier! ('PARTUUID=e6c021cc-d0d8-400c-8f5c-b10adeff65fe')
     """
     if '=' in expression:
         name, _, value = expression.partition('=')
+        # Handle LABEL="User defined label" expressions.
+        if name.upper() == 'LABEL':
+            # Abuse shlex.split() to strip the quotes from the label (because
+            # it's slightly better than naively stripping all leading and
+            # trailing quotes).
+            tokens = shlex.split(value)
+            if len(tokens) == 1:
+                # Gotcha: Make sure to properly encode spaces.
+                label = tokens[0].replace(' ', r'\x20')
+                return os.path.join('/dev/disk/by-label', label)
+        # Handle UUID=6f31b39a-8e3b-4d2c-af74-36653110bfc5 expressions.
         if name.upper() == 'UUID':
             return os.path.join('/dev/disk/by-uuid', value.lower())
-        else:
-            msg = "Unsupported device identifier! (%r)"
-            raise ValueError(msg % name)
+        # Complain about unhandled device identifiers.
+        msg = "Unsupported device identifier! (%r)"
+        raise ValueError(msg % expression)
     return expression
 
 
