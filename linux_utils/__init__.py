@@ -15,7 +15,7 @@ from executor.contexts import AbstractContext, LocalContext
 from humanfriendly import parse_size
 from six import string_types
 
-__version__ = '0.1'
+__version__ = '0.2'
 """Semi-standard module versioning."""
 
 
