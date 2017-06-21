@@ -105,8 +105,11 @@ def generate_key_file(filename, size=DEFAULT_KEY_SIZE, context=None):
     logger.debug("Creating key file of %i bytes: %s", size, filename)
     context.execute(
         'dd', 'if=/dev/urandom', 'of=%s' % filename,
-        'bs=%i' % size, 'count=1', 'status=none',
-        sudo=True,
+        'bs=%i' % size, 'count=1',
+        # I'd rather use `status=none' then silent=True, however the
+        # `status=none' flag isn't supported on Ubuntu 12.04 which
+        # currently runs on Travis CI, so there you go :-p.
+        silent=True, sudo=True,
     )
     context.execute('chown', 'root:root', filename, sudo=True)
     context.execute('chmod', '400', filename, sudo=True)
