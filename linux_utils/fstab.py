@@ -4,7 +4,11 @@
 # Last Change: June 21, 2017
 # URL: https://linux-utils.readthedocs.io
 
-"""Parsing of ``/etc/fstab`` configuration files."""
+"""
+Parsing of `/etc/fstab`_ configuration files.
+
+.. _/etc/fstab: https://manpages.debian.org/fstab
+"""
 
 # Standard library modules.
 import logging
@@ -32,8 +36,7 @@ def find_mounted_filesystems(filename='/proc/mounts', context=None):
     :returns: A generator of :class:`FileSystemEntry` objects.
 
     This function is a trivial wrapper for :func:`parse_fstab()` that instructs
-    it to parse ``/proc/mounts`` instead of ``/etc/fstab``. Here's an
-    example:
+    it to parse ``/proc/mounts`` instead of `/etc/fstab`_. Here's an example:
 
     >>> from humanfriendly import format_table
     >>> from linux_utils.fstab import find_mounted_filesystems
@@ -66,10 +69,10 @@ def find_mounted_filesystems(filename='/proc/mounts', context=None):
 
 def parse_fstab(filename='/etc/fstab', context=None):
     """
-    Parse the Linux configuration file ``/etc/fstab``.
+    Parse the Linux configuration file `/etc/fstab`_.
 
     :param filename: The absolute pathname of the file to parse (a string,
-                     defaults to ``/etc/fstab``).
+                     defaults to `/etc/fstab`_).
     :param context: An execution context created by :mod:`executor.contexts`
                     (coerced using :func:`.coerce_context()`).
     :returns: A generator of :class:`FileSystemEntry` objects.
@@ -102,7 +105,7 @@ def parse_fstab(filename='/etc/fstab', context=None):
 class FileSystemEntry(TabFileEntry):
 
     """
-    An entry parsed from ``/etc/fstab``.
+    An entry parsed from `/etc/fstab`_.
 
     Each entry in the fstab file has six fields, these are mapped to the
     following properties:

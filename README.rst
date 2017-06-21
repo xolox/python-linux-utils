@@ -8,10 +8,15 @@ linux-utils: Linux system administration tools for Python
    :target: https://coveralls.io/r/xolox/python-linux-utils?branch=master
 
 The Python package `linux-utils` provides utility functions that make it easy
-to script system administration tasks on Linux_ systems in Python. At the
-moment only parsing of the ``/etc/fstab`` and ``/etc/crypttab`` configuration
-files is implemented, but more functionality will soon be released. The package
-is currently tested on cPython 2.6, 2.7, 3.4, 3.5, 3.6 and PyPy (2.7).
+to script system administration tasks on Linux_ systems in Python. The
+following functionality is currently implemented:
+
+- Parsing of the `/etc/fstab`_ and `/etc/crypttab`_ configuration files.
+- A basic Python API for cryptsetup_ and a Python implementation of
+  cryptdisks_start_ and cryptdisks_stop_.
+
+The package is currently tested on cPython 2.6, 2.7, 3.4, 3.5, 3.6 and PyPy
+(2.7) on Ubuntu Linux (using `Travis CI`_).
 
 .. contents::
    :local:
@@ -41,7 +46,7 @@ History
 -------
 
 Back in 2015 I wrote some Python code to parse the Linux configuration files
-``/etc/fstab`` and ``/etc/crypttab`` for use in crypto-drive-manager_. Fast
+`/etc/fstab`_ and `/etc/crypttab`_ for use in crypto-drive-manager_. Fast
 forward to 2017 and I found myself wanting to use the same functionality
 in rsync-system-backup_. Three options presented themselves to me:
 
@@ -66,13 +71,14 @@ in rsync-system-backup_. Three options presented themselves to me:
    (which doesn't have a test suite at the time of writing).
 
 While extracting the code I shortly considered integrating the functionality
-into debuntu-tools_, however the ``/etc/fstab`` and ``/etc/crypttab`` parsing
+into debuntu-tools_, however the `/etc/fstab`_ and `/etc/crypttab`_ parsing
 isn't specific to Debian or Ubuntu at all and debuntu-tools_ has several
 dependencies that aren't relevant to Linux configuration file parsing.
 
-Tangentially related: The reason I went with the extremely generic name
-`linux-utils` is because I will be adding more *"specific to Linux but not
-Debian"* functionality to this package in the very near future :-).
+Since then it has become clear that this was a good choice (not merging the
+functionality into debuntu-tools_) because the package now provides a Python
+implementation of cryptdisks_start_ and cryptdisks_stop_, which is mostly
+useful on Linux systems that *aren't* based on Debian :-).
 
 Contact
 -------
@@ -91,6 +97,8 @@ This software is licensed under the `MIT license`_.
 
 .. External references:
 
+.. _/etc/crypttab: https://manpages.debian.org/crypttab
+.. _/etc/fstab: https://manpages.debian.org/fstab
 .. _crypto-drive-manager: https://pypi.python.org/pypi/crypto-drive-manager
 .. _debuntu-tools: https://pypi.python.org/pypi/debuntu-tools
 .. _GitHub: https://github.com/xolox/python-linux-utils
@@ -103,4 +111,5 @@ This software is licensed under the `MIT license`_.
 .. _Python: https://www.python.org/
 .. _Read the Docs: https://linux-utils.readthedocs.org
 .. _rsync-system-backup: https://pypi.python.org/pypi/rsync-system-backup
+.. _Travis CI: https://travis-ci.org/xolox/python-linux-utils/builds
 .. _virtual environments: http://docs.python-guide.org/en/latest/dev/virtualenvs/
