@@ -13,7 +13,7 @@ following functionality is currently implemented:
 
 - Parsing of the `/etc/fstab`_ and `/etc/crypttab`_ configuration files.
 - A basic Python API for cryptsetup_ and a Python implementation of
-  cryptdisks_start_ and cryptdisks_stop_.
+  cryptdisks_start_ and cryptdisks_stop_ (with a command line interface).
 
 The package is currently tested on cPython 2.6, 2.7, 3.4, 3.5, 3.6 and PyPy
 (2.7) on Ubuntu Linux (using `Travis CI`_).
@@ -40,7 +40,18 @@ instructions ;-).
 Usage
 -----
 
-Please refer to the API documentation available on `Read the Docs`_.
+For details about the Python API please refer to the API documentation
+available on `Read the Docs`_.
+
+The Python implementation of cryptdisks_start_ and cryptdisks_stop_ is
+available on the command line as two programs:
+
+- ``cryptdisks-start-fallback``
+- ``cryptdisks-stop-fallback``
+
+As the names imply these programs are not functional equivalents of their
+"official" counterparts, because they only support LUKS encryption and a small
+subset of the available encryption options.
 
 History
 -------

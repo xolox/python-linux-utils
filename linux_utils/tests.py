@@ -1,7 +1,7 @@
 # Test suite for the `linux-utils' Python package.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 21, 2017
+# Last Change: June 22, 2017
 # URL: https://linux-utils.readthedocs.io
 
 """Test suite for the `linux-utils` package."""
@@ -10,6 +10,7 @@
 import functools
 import logging
 import os
+import sys
 import tempfile
 import unittest
 
@@ -22,6 +23,7 @@ from mock import MagicMock
 
 # The module we're testing.
 from linux_utils import coerce_context, coerce_device_file, coerce_size
+from linux_utils.cli import cryptdisks_start_cli, cryptdisks_stop_cli
 from linux_utils.crypttab import parse_crypttab
 from linux_utils.fstab import find_mounted_filesystems, parse_fstab
 from linux_utils.luks import (
@@ -262,7 +264,11 @@ class LinuxUtilsTestCase(unittest.TestCase):
             # Make sure the mapped device file doesn't exist yet.
             assert not os.path.exists(TEST_TARGET_DEVICE)
             # Unlock the encrypted filesystem using `cryptdisks_start'.
-            cryptdisks_start(context=context, target=TEST_TARGET_NAME)
+            if emulated:
+                cryptdisks_start(context=context, target=TEST_TARGET_NAME)
+            else:
+                sys.argv = ['cryptdisks-start-fallback', TEST_TARGET_NAME]
+                cryptdisks_start_cli()
             # Make sure the mapped device file has appeared.
             assert os.path.exists(TEST_TARGET_DEVICE)
             # Unlock the encrypted filesystem again (this should be a no-op).
@@ -270,7 +276,11 @@ class LinuxUtilsTestCase(unittest.TestCase):
             # Make sure the mapped device file still exists.
             assert os.path.exists(TEST_TARGET_DEVICE)
             # Lock the filesystem before we finish.
-            cryptdisks_stop(context=context, target=TEST_TARGET_NAME)
+            if emulated:
+                cryptdisks_stop(context=context, target=TEST_TARGET_NAME)
+            else:
+                sys.argv = ['cryptdisks-stop-fallback', TEST_TARGET_NAME]
+                cryptdisks_stop_cli()
             # Make sure the mapped device file has disappeared.
             assert not os.path.exists(TEST_TARGET_DEVICE)
             # Lock the filesystem again (this should be a no-op).

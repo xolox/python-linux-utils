@@ -17,6 +17,12 @@ the `linux-utils` package.
 .. automodule:: linux_utils
    :members:
 
+:mod:`linux_utils.cli`
+----------------------
+
+.. automodule:: linux_utils.cli
+   :members:
+
 :mod:`linux_utils.crypttab`
 ---------------------------
 
