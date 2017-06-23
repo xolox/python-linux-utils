@@ -110,7 +110,10 @@ This software is licensed under the `MIT license`_.
 
 .. _/etc/crypttab: https://manpages.debian.org/crypttab
 .. _/etc/fstab: https://manpages.debian.org/fstab
+.. _cryptdisks_start: https://manpages.debian.org/cryptdisks_start
+.. _cryptdisks_stop: https://manpages.debian.org/cryptdisks_stop
 .. _crypto-drive-manager: https://pypi.python.org/pypi/crypto-drive-manager
+.. _cryptsetup: https://manpages.debian.org/cryptsetup
 .. _debuntu-tools: https://pypi.python.org/pypi/debuntu-tools
 .. _GitHub: https://github.com/xolox/python-linux-utils
 .. _Linux: https://en.wikipedia.org/wiki/Linux
