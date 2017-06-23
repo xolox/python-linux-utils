@@ -1,7 +1,7 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 21, 2017
+# Last Change: June 23, 2017
 # URL: https://linux-utils.readthedocs.io
 
 """
@@ -117,7 +117,13 @@ class FileSystemEntry(TabFileEntry):
     5. :attr:`dump_frequency`
     6. :attr:`check_order`
 
-    Refer to the `fstab man page`_ for more information.
+    Refer to the `fstab man page`_ for more information about the meaning of
+    each of these fields. The values of the following properties are computed
+    based on the six fields above:
+
+    - :attr:`device_file`
+    - :attr:`nfs_directory`
+    - :attr:`nfs_server`
 
     .. _fstab man page: https://manpages.debian.org/fstab
     """
@@ -165,6 +171,34 @@ class FileSystemEntry(TabFileEntry):
         Each occurrence of the escape sequence ``\040`` is replaced by a space.
         """
         return self.tokens[1].replace(r'\040', ' ')
+
+    @lazy_property
+    def nfs_directory(self):
+        """
+        The directory on the NFS server (a string or :data:`None`).
+
+        When :attr:`vfs_type` is ``nfs`` or ``nfs4`` and :attr:`device` is of
+        the form ``<server>:<directory>`` the value of :attr:`nfs_directory`
+        will be the part *after* the colon (``:``).
+        """
+        if self.vfs_type in ('nfs', 'nfs4'):
+            server, _, directory = self.device.partition(':')
+            if server and directory:
+                return directory
+
+    @lazy_property
+    def nfs_server(self):
+        """
+        The host name or IP address of the NFS server (a string or :data:`None`).
+
+        When :attr:`vfs_type` is ``nfs`` or ``nfs4`` and :attr:`device` is of
+        the form ``<server>:<directory>`` the value of :attr:`nfs_server` will
+        be the part *before* the colon (``:``).
+        """
+        if self.vfs_type in ('nfs', 'nfs4'):
+            server, _, directory = self.device.partition(':')
+            if server and directory:
+                return server
 
     @lazy_property
     def options(self):

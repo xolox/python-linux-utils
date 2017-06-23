@@ -1,7 +1,7 @@
 # Test suite for the `linux-utils' Python package.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 22, 2017
+# Last Change: June 23, 2017
 # URL: https://linux-utils.readthedocs.io
 
 """Test suite for the `linux-utils` package."""
@@ -152,19 +152,47 @@ class LinuxUtilsTestCase(unittest.TestCase):
 
     def test_parse_fstab(self):
         """Test the ``/etc/fstab`` parsing."""
-        device_file = '/dev/mapper/backups'
-        mount_point = '/mnt/backups'
-        vfs_type = 'ext4'
-        options = ['noauto', 'errors=remount-ro']
-        dump_frequency = 1
-        check_order = 0
-        fake_entry = [device_file, mount_point, vfs_type, ','.join(options),
-                      str(dump_frequency), str(check_order)]
+        # The following entry concerns a local filesystem.
+        local_filesystem = dict(
+            device='/dev/mapper/backups',
+            mount_point='/mnt/backups',
+            vfs_type='ext4',
+            options=['noauto', 'errors=remount-ro'],
+            dump_frequency=1,
+            check_order=0,
+        )
+        # The following entry concerns a directory exported over NFS.
+        nfs_directory = '/exported/directory'
+        nfs_server = '1.2.3.4'
+        nfs_export = dict(
+            device='%s:%s' % (nfs_server, nfs_directory),
+            mount_point='/mnt/share',
+            vfs_type='nfs',
+            options=['noauto'],
+        )
+        # We define the ordered string fields of the entry for the local
+        # filesystem here because we will re-use them to test support for
+        # `incomplete' entries (without the last two fields).
+        local_entry = [
+            local_filesystem['device'],
+            local_filesystem['mount_point'],
+            local_filesystem['vfs_type'],
+            ','.join(local_filesystem['options']),
+            str(local_filesystem['dump_frequency']),
+            str(local_filesystem['check_order']),
+        ]
         with tempfile.NamedTemporaryFile() as temporary_file:
             # Create a fake /etc/crypttab file with a valid and complete entry.
-            temporary_file.write((' '.join(fake_entry) + '\n').encode('ascii'))
+            temporary_file.write((' '.join(local_entry) + '\n').encode('ascii'))
             # Also add a valid but incomplete entry.
-            temporary_file.write((' '.join(fake_entry[:4]) + '\n').encode('ascii'))
+            temporary_file.write((' '.join(local_entry[:4]) + '\n').encode('ascii'))
+            # We also add an entry for a remote directory exported by an NFS server.
+            temporary_file.write((' '.join([
+                nfs_export['device'],
+                nfs_export['mount_point'],
+                nfs_export['vfs_type'],
+                ','.join(nfs_export['options']),
+            ]) + '\n').encode('ascii'))
             # Also add a corrupt entry to the file.
             temporary_file.write('oops!\n'.encode('ascii'))
             # Make sure the contents are on disk.
@@ -172,17 +200,34 @@ class LinuxUtilsTestCase(unittest.TestCase):
             # Parse the file.
             entries = list(parse_fstab(filename=temporary_file.name))
             # Check the results.
-            assert len(entries) == 2
+            assert len(entries) == 3
             # Check the first (valid and complete) entry.
-            assert entries[0].device_file == device_file
-            assert entries[0].mount_point == mount_point
-            assert entries[0].vfs_type == vfs_type
-            assert entries[0].options == options
-            assert entries[0].dump_frequency == dump_frequency
-            assert entries[0].check_order == check_order
+            assert entries[0].check_order == local_filesystem['check_order']
+            assert entries[0].device == local_filesystem['device']
+            assert entries[0].device_file == local_filesystem['device']
+            assert entries[0].dump_frequency == local_filesystem['dump_frequency']
+            assert entries[0].mount_point == local_filesystem['mount_point']
+            assert entries[0].nfs_directory is None
+            assert entries[0].nfs_server is None
+            assert entries[0].options == local_filesystem['options']
+            assert entries[0].vfs_type == local_filesystem['vfs_type']
             # Check the second (valid but incomplete) entry.
-            assert entries[1].dump_frequency == 0
             assert entries[1].check_order == 0
+            assert entries[1].device == local_filesystem['device']
+            assert entries[1].device_file == local_filesystem['device']
+            assert entries[1].dump_frequency == 0
+            assert entries[1].mount_point == local_filesystem['mount_point']
+            assert entries[1].nfs_directory is None
+            assert entries[1].nfs_server is None
+            assert entries[1].options == local_filesystem['options']
+            assert entries[1].vfs_type == local_filesystem['vfs_type']
+            # Check the third (remote) entry.
+            assert entries[2].device == nfs_export['device']
+            assert entries[2].mount_point == nfs_export['mount_point']
+            assert entries[2].nfs_directory == nfs_directory
+            assert entries[2].nfs_server == nfs_server
+            assert entries[2].options == nfs_export['options']
+            assert entries[2].vfs_type == nfs_export['vfs_type']
 
     def test_find_mounted_filesystems(self):
         """Test the ``/proc/mounts`` parsing."""
