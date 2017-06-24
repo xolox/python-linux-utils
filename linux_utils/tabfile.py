@@ -1,7 +1,7 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 21, 2017
+# Last Change: June 24, 2017
 # URL: https://linux-utils.readthedocs.io
 
 """Generic parsing of Linux configuration files like ``/etc/fstab`` and ``/etc/crypttab``."""
@@ -14,6 +14,12 @@ from property_manager import PropertyManager, mutable_property
 
 # Modules included in our package.
 from linux_utils import coerce_context
+
+# Public identifiers that require documentation.
+__all__ = (
+    'TabFileEntry',
+    'parse_tab_file',
+)
 
 
 def parse_tab_file(filename, context=None, encoding='UTF-8'):

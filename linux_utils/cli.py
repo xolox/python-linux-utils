@@ -1,7 +1,7 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 22, 2017
+# Last Change: June 24, 2017
 # URL: https://linux-utils.readthedocs.io
 
 """Command line interface for :func:`.cryptdisks_start()` and :func:`.cryptdisks_stop()`."""
@@ -17,6 +17,13 @@ from humanfriendly.text import dedent
 
 # Modules included in our package.
 from linux_utils.luks import cryptdisks_start, cryptdisks_stop
+
+# Public identifiers that require documentation.
+__all__ = (
+    'cryptdisks_start_cli',
+    'cryptdisks_stop_cli',
+    'logger',
+)
 
 # Initialize a logger for this module.
 logger = logging.getLogger(__name__)

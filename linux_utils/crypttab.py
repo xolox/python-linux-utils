@@ -1,7 +1,7 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 21, 2017
+# Last Change: June 24, 2017
 # URL: https://linux-utils.readthedocs.io
 
 """
@@ -37,6 +37,13 @@ from property_manager import lazy_property
 # Modules included in our package.
 from linux_utils import coerce_device_file
 from linux_utils.tabfile import TabFileEntry, parse_tab_file
+
+# Public identifiers that require documentation.
+__all__ = (
+    'EncryptedFileSystemEntry',
+    'logger',
+    'parse_crypttab',
+)
 
 # Initialize a logger for this module.
 logger = logging.getLogger(__name__)
