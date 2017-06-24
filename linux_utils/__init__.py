@@ -24,7 +24,7 @@ __all__ = (
     'coerce_size',
 )
 
-__version__ = '0.4.1'
+__version__ = '0.5'
 """Semi-standard module versioning."""
 
 
