@@ -7,19 +7,22 @@
 """Test suite for the `linux-utils` package."""
 
 # Standard library modules.
+import codecs
 import functools
 import logging
 import os
+import stat
 import tempfile
 
 # External dependencies.
 from executor import ExternalCommandFailed, execute
 from executor.contexts import LocalContext
-from humanfriendly.testing import TestCase, run_cli
+from humanfriendly.testing import TemporaryDirectory, TestCase, run_cli
 from mock import MagicMock
 
 # The module we're testing.
 from linux_utils import coerce_context, coerce_device_file, coerce_size
+from linux_utils.atomic import make_dirs, touch, write_contents
 from linux_utils.cli import cryptdisks_start_cli, cryptdisks_stop_cli
 from linux_utils.crypttab import parse_crypttab
 from linux_utils.fstab import find_mounted_filesystems, parse_fstab
@@ -83,6 +86,71 @@ class LinuxUtilsTestCase(TestCase):
         assert coerce_size(1) == 1
         assert coerce_size('5 KiB') == 5120
         self.assertRaises(ValueError, coerce_size, None)
+
+    def test_make_dirs(self):
+        """Test make_dirs()."""
+        with TemporaryDirectory() as directory:
+            subdirectory = os.path.join(directory, 'a', 'b', 'c')
+            make_dirs(subdirectory)
+            # Make sure the subdirectory was created.
+            assert os.path.isdir(subdirectory)
+            # Make sure existing directories don't raise an exception.
+            make_dirs(subdirectory)
+            # Make sure that errors other than EEXIST aren't swallowed. For the
+            # purpose of this test we assume that /proc is the Linux `process
+            # information pseudo-file system' whose top level directories
+            # aren't writable (with or without superuser privileges).
+            self.assertRaises(OSError, make_dirs, '/proc/linux-utils-test')
+
+    def test_touch(self):
+        """Test touch()."""
+        expected_contents = u"Hello world!"
+        with TemporaryDirectory() as directory:
+            # Test that touch() creates files.
+            filename = os.path.join(directory, 'file-to-touch')
+            touch(filename)
+            assert os.path.isfile(filename)
+            # Test that touch() doesn't change a file's contents.
+            with open(filename, 'w') as handle:
+                handle.write(expected_contents)
+            touch(filename)
+            with open(filename) as handle:
+                assert handle.read() == expected_contents
+
+    def test_write_contents_create(self):
+        """Test write_contents()."""
+        expected_contents = u"Hello world!"
+        with TemporaryDirectory() as directory:
+            # Create the file.
+            filename = os.path.join(directory, 'file-to-create')
+            assert not os.path.exists(filename)
+            write_contents(filename, expected_contents)
+            # Make sure the file exists.
+            assert os.path.exists(filename)
+            # Validate the file's contents.
+            with codecs.open(filename, 'r', 'UTF-8') as handle:
+                assert handle.read() == expected_contents
+
+    def test_write_contents_update(self):
+        """Test write_contents()."""
+        initial_contents = u"Hello world!"
+        revised_contents = u"Something else"
+        with TemporaryDirectory() as directory:
+            # Create the file.
+            filename = os.path.join(directory, 'file-to-update')
+            write_contents(filename, initial_contents, mode=0o770)
+            # Validate the file's mode.
+            assert stat.S_IMODE(os.stat(filename).st_mode) == 0o770
+            # Validate the file's contents.
+            with codecs.open(filename, 'r', 'UTF-8') as handle:
+                assert handle.read() == initial_contents
+            # Update the file.
+            write_contents(filename, revised_contents)
+            # Validate the file's mode.
+            assert stat.S_IMODE(os.stat(filename).st_mode) == 0o770
+            # Validate the file's contents.
+            with codecs.open(filename, 'r', 'UTF-8') as handle:
+                assert handle.read() == revised_contents
 
     def test_parse_tab_file(self):
         """Test the generic tab file parsing."""

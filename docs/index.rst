@@ -17,6 +17,12 @@ the `linux-utils` package.
 .. automodule:: linux_utils
    :members:
 
+:mod:`linux_utils.atomic`
+-------------------------
+
+.. automodule:: linux_utils.atomic
+   :members:
+
 :mod:`linux_utils.cli`
 ----------------------
 
