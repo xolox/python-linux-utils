@@ -1,7 +1,7 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 21, 2017
+# Last Change: June 24, 2017
 # URL: https://linux-utils.readthedocs.io
 
 """
@@ -59,6 +59,7 @@ import logging
 
 # External dependencies.
 from executor import ExternalCommandFailed, quote
+from humanfriendly.prompts import retry_limit
 
 # Modules included in our package.
 from linux_utils import coerce_context, coerce_size
@@ -176,13 +177,12 @@ def unlock_filesystem(device_file, target, key_file=None, options=None, context=
                 tries = int(value)
     open_command.extend(sorted(open_options))
     open_command.extend(['luksOpen', device_file, target])
-    for attempt in range(1, tries + 1):
+    for attempt in retry_limit(tries):
         try:
             context.execute(*open_command, sudo=True, tty=(key_file is None))
         except ExternalCommandFailed:
             if attempt < tries and not key_file:
                 logger.warning("Failed to unlock, retrying ..")
-                continue
             else:
                 raise
         else:
