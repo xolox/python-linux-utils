@@ -1,7 +1,7 @@
 # Test suite for the `linux-utils' Python package.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 23, 2017
+# Last Change: June 24, 2017
 # URL: https://linux-utils.readthedocs.io
 
 """Test suite for the `linux-utils` package."""
@@ -10,15 +10,12 @@
 import functools
 import logging
 import os
-import sys
 import tempfile
-import unittest
 
 # External dependencies.
-import coloredlogs
 from executor import ExternalCommandFailed, execute
 from executor.contexts import LocalContext
-from humanfriendly import compact
+from humanfriendly.testing import TestCase, run_cli
 from mock import MagicMock
 
 # The module we're testing.
@@ -50,34 +47,17 @@ TEST_UNKNOWN_TARGET = 'linux-utils-invalid'
 logger = logging.getLogger(__name__)
 
 
-class LinuxUtilsTestCase(unittest.TestCase):
+class LinuxUtilsTestCase(TestCase):
 
     """:mod:`unittest` compatible container for `linux-utils` tests."""
 
-    def setUp(self):
-        """Enable verbose logging and reset it after each test."""
-        coloredlogs.install(level='DEBUG')
-
     def tearDown(self):
         """Cleanup the image file created by the test suite."""
+        # Tear down our superclass.
+        super(LinuxUtilsTestCase, self).tearDown()
+        # Cleanup the image file created by the test suite.
         if os.path.exists(TEST_IMAGE_FILE):
             os.unlink(TEST_IMAGE_FILE)
-
-    def skipTest(self, text, *args, **kw):
-        """
-        Enable backwards compatible "marking of tests to skip".
-
-        By calling this method from a return statement in the test to be
-        skipped the test can be marked as skipped when possible, without
-        breaking the test suite when unittest.TestCase.skipTest() isn't
-        available.
-        """
-        reason = compact(text, *args, **kw)
-        try:
-            super(LinuxUtilsTestCase, self).skipTest(reason)
-        except AttributeError:
-            # unittest.TestCase.skipTest() isn't available in Python 2.6.
-            logger.warning("%s", reason)
 
     def test_coerce_context(self):
         """Test coercion of execution contexts."""
@@ -312,8 +292,8 @@ class LinuxUtilsTestCase(unittest.TestCase):
             if emulated:
                 cryptdisks_start(context=context, target=TEST_TARGET_NAME)
             else:
-                sys.argv = ['cryptdisks-start-fallback', TEST_TARGET_NAME]
-                cryptdisks_start_cli()
+                returncode, output = run_cli(cryptdisks_start_cli, TEST_TARGET_NAME)
+                assert returncode == 0
             # Make sure the mapped device file has appeared.
             assert os.path.exists(TEST_TARGET_DEVICE)
             # Unlock the encrypted filesystem again (this should be a no-op).
@@ -324,8 +304,8 @@ class LinuxUtilsTestCase(unittest.TestCase):
             if emulated:
                 cryptdisks_stop(context=context, target=TEST_TARGET_NAME)
             else:
-                sys.argv = ['cryptdisks-stop-fallback', TEST_TARGET_NAME]
-                cryptdisks_stop_cli()
+                returncode, output = run_cli(cryptdisks_stop_cli, TEST_TARGET_NAME)
+                assert returncode == 0
             # Make sure the mapped device file has disappeared.
             assert not os.path.exists(TEST_TARGET_DEVICE)
             # Lock the filesystem again (this should be a no-op).
