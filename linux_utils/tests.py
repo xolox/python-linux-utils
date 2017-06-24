@@ -320,3 +320,16 @@ class LinuxUtilsTestCase(TestCase):
                     context=context,
                     target=TEST_UNKNOWN_TARGET,
                 )
+
+    def test_cryptdisks_start_stop_usage(self):
+        """Test the ``cryptdisks-start-fallback`` usage message."""
+        for fallback in cryptdisks_start_cli, cryptdisks_stop_cli:
+            returncode, output = run_cli(fallback, merged=True)
+            assert returncode == 0
+            assert "Usage:" in output
+
+    def test_cryptdisks_start_stop_error_reporting(self):
+        """Test the ``cryptdisks-start-fallback`` error reporting."""
+        for fallback in cryptdisks_start_cli, cryptdisks_stop_cli:
+            returncode, output = run_cli(fallback, TEST_UNKNOWN_TARGET, merged=True)
+            assert returncode != 0
