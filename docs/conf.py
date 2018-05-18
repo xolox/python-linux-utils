@@ -20,6 +20,7 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.viewcode',
     'humanfriendly.sphinx',
+    'property_manager.sphinx',
 ]
 
 # Sort members by the source order instead of alphabetically.
@@ -68,7 +69,8 @@ pygments_style = 'sphinx'
 # Refer to the Python standard library.
 # From: http://twistedmatrix.com/trac/ticket/4582.
 intersphinx_mapping = dict(
-    python=('https://docs.python.org/2', None),
+    python2=('https://docs.python.org/2', None),
+    python3=('https://docs.python.org/3', None),
     executor=('https://executor.readthedocs.io/en/latest/', None),
     humanfriendly=('https://humanfriendly.readthedocs.io/en/latest/', None),
     propertymanager=('https://property-manager.readthedocs.io/en/latest/', None),
@@ -79,6 +81,3 @@ intersphinx_mapping = dict(
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 html_theme = 'nature'
-
-# Output file base name for HTML help builder.
-htmlhelp_basename = 'linuxutilsdoc'
