@@ -1,7 +1,7 @@
 # Makefile for the `linux-utils' package.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 21, 2017
+# Last Change: May 18, 2018
 # URL: https://linux-utils.readthedocs.io
 
 PACKAGE_NAME = linux-utils
@@ -21,6 +21,7 @@ default:
 	@echo '    make check      check coding style (PEP-8, PEP-257)'
 	@echo '    make test       run the test suite, report coverage'
 	@echo '    make tox        run the tests on all Python versions'
+	@echo '    make readme     update usage in readme'
 	@echo '    make docs       update documentation using Sphinx'
 	@echo '    make publish    publish changes to GitHub/PyPI'
 	@echo '    make clean      cleanup all temporary files'
@@ -52,7 +53,10 @@ test: install
 tox: install
 	@pip-accel install --quiet tox && tox
 
-docs:
+readme: install
+	@pip-accel install --quiet cogapp && cog.py -r README.rst
+
+docs: readme
 	@pip-accel install --quiet sphinx
 	@cd docs && sphinx-build -nb html -d build/doctrees . build/html
 
@@ -69,4 +73,4 @@ clean:
 	@find -depth -type d -name __pycache__ -exec rm -Rf {} \;
 	@find -type f -name '*.pyc' -delete
 
-.PHONY: default install reset check test tox docs publish clean
+.PHONY: default install reset check test tox readme docs publish clean

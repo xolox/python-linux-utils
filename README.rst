@@ -41,17 +41,62 @@ Usage
 -----
 
 For details about the Python API please refer to the API documentation
-available on `Read the Docs`_.
+available on `Read the Docs`_. The Python implementation of cryptdisks_start_
+and cryptdisks_stop_ is available on the command line as the following two
+programs:
 
-The Python implementation of cryptdisks_start_ and cryptdisks_stop_ is
-available on the command line as two programs:
-
-- ``cryptdisks-start-fallback``
-- ``cryptdisks-stop-fallback``
+.. contents::
+   :local:
 
 As the names imply these programs are not functional equivalents of their
 "official" counterparts, because they only support LUKS encryption and a small
 subset of the available encryption options.
+
+cryptdisks-start-fallback
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. A DRY solution to avoid duplication of the `remote-fde-client --help' text:
+..
+.. [[[cog
+.. import cog
+.. from humanfriendly.text import dedent
+.. from humanfriendly.usage import render_usage
+.. from linux_utils.cli import cryptdisks_start_cli
+.. cog.out("\n" + render_usage(dedent(cryptdisks_start_cli.__doc__)) + "\n")
+.. ]]]
+
+**Usage:** `cryptdisks-start-fallback NAME`
+
+Reads /etc/crypttab and unlocks the encrypted filesystem with the given NAME.
+
+This program emulates the functionality of Debian's cryptdisks_start program,
+but it only supports LUKS encryption and a small subset of the available
+encryption options.
+
+.. [[[end]]]
+
+cryptdisks-stop fallback
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. A DRY solution to avoid duplication of the `remote-fde-client --help' text:
+..
+.. [[[cog
+.. import cog
+.. from humanfriendly.text import dedent
+.. from humanfriendly.usage import render_usage
+.. from linux_utils.cli import cryptdisks_stop_cli
+.. cog.out("\n" + render_usage(dedent(cryptdisks_stop_cli.__doc__)) + "\n")
+.. ]]]
+
+**Usage:** `cryptdisks-stop-fallback NAME`
+
+Reads /etc/crypttab and locks the encrypted filesystem with the given NAME.
+
+This program emulates the functionality of Debian's cryptdisks_stop program,
+but it only supports LUKS encryption and a small subset of the available
+encryption options.
+
+.. [[[end]]]
 
 History
 -------
@@ -123,7 +168,7 @@ This software is licensed under the `MIT license`_.
 .. _PyPI: https://pypi.python.org/pypi/linux-utils
 .. _Python Package Index: https://pypi.python.org/pypi/linux-utils
 .. _Python: https://www.python.org/
-.. _Read the Docs: https://linux-utils.readthedocs.org
+.. _Read the Docs: https://linux-utils.readthedocs.io/en/latest/
 .. _rsync-system-backup: https://pypi.python.org/pypi/rsync-system-backup
 .. _Travis CI: https://travis-ci.org/xolox/python-linux-utils/builds
 .. _virtual environments: http://docs.python-guide.org/en/latest/dev/virtualenvs/
