@@ -1,54 +1,32 @@
-.. include:: ../README.rst
+linux-utils: Linux system administration tools for Python
+=========================================================
 
-API documentation
-=================
-
-The following documentation is based on the source code of version |release| of
-the `linux-utils` package.
-
-**Available modules**
+Welcome to the documentation of `linux-utils` version |release|!
+The following sections are available:
 
 .. contents::
    :local:
 
-:mod:`linux_utils`
+User documentation
 ------------------
 
-.. automodule:: linux_utils
-   :members:
+The readme is the best place to start reading, it's targeted at all users:
 
-:mod:`linux_utils.atomic`
--------------------------
+.. toctree::
+   readme.rst
 
-.. automodule:: linux_utils.atomic
-   :members:
+API documentation
+-----------------
 
-:mod:`linux_utils.cli`
-----------------------
+The following API documentation is automatically generated from the source code:
 
-.. automodule:: linux_utils.cli
-   :members:
+.. toctree::
+   api.rst
 
-:mod:`linux_utils.crypttab`
----------------------------
+Change log
+----------
 
-.. automodule:: linux_utils.crypttab
-   :members:
+The change log lists notable changes to the project:
 
-:mod:`linux_utils.fstab`
-------------------------
-
-.. automodule:: linux_utils.fstab
-   :members:
-
-:mod:`linux_utils.luks`
------------------------
-
-.. automodule:: linux_utils.luks
-   :members:
-
-:mod:`linux_utils.tabfile`
---------------------------
-
-.. automodule:: linux_utils.tabfile
-   :members:
+.. toctree::
+   changelog.rst

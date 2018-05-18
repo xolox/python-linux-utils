@@ -140,9 +140,9 @@ Contact
 -------
 
 The latest version of `linux-utils` is available on PyPI_ and GitHub_. The
-documentation is hosted on `Read the Docs`_. For bug reports please create an
-issue on GitHub_. If you have questions, suggestions, etc. feel free to send me
-an e-mail at `peter@peterodding.com`_.
+documentation is available on `Read the Docs`_ and includes a changelog_. For
+bug reports please create an issue on GitHub_. If you have questions,
+suggestions, etc. feel free to send me an e-mail at `peter@peterodding.com`_.
 
 License
 -------
@@ -151,10 +151,9 @@ This software is licensed under the `MIT license`_.
 
 © 2018 Peter Odding.
 
-.. External references:
-
 .. _/etc/crypttab: https://manpages.debian.org/crypttab
 .. _/etc/fstab: https://manpages.debian.org/fstab
+.. _changelog: https://linux-utils.readthedocs.org/en/latest/changelog.html
 .. _cryptdisks_start: https://manpages.debian.org/cryptdisks_start
 .. _cryptdisks_stop: https://manpages.debian.org/cryptdisks_stop
 .. _crypto-drive-manager: https://pypi.python.org/pypi/crypto-drive-manager
