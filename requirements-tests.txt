@@ -1,3 +1,4 @@
+# Python packages required to run the test suite.
 mock >= 1.0.1
 pytest >= 2.6.1
 pytest-cov >= 2.2.1
