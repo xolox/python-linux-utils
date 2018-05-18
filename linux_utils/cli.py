@@ -1,10 +1,15 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 24, 2017
+# Last Change: May 18, 2018
 # URL: https://linux-utils.readthedocs.io
 
-"""Command line interface for :func:`.cryptdisks_start()` and :func:`.cryptdisks_stop()`."""
+"""
+Command line interface for :mod:`linux_utils.luks`.
+
+The :mod:`linux_utils.cli` module implements command line interfaces for the
+:func:`.cryptdisks_start()` and :func:`.cryptdisks_stop()` functions.
+"""
 
 # Standard library modules.
 import logging
