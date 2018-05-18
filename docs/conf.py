@@ -1,7 +1,7 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 21, 2017
+# Last Change: May 18, 2018
 # URL: https://linux-utils.readthedocs.io
 
 """Sphinx documentation configuration for the `linux-utils` package."""
@@ -35,8 +35,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'linux-utils'
-copyright = u'2017, Peter Odding'
+project = 'linux-utils'
+copyright = '2018, Peter Odding'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
