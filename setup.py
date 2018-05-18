@@ -3,7 +3,7 @@
 # Setup script for the `linux-utils' package.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 22, 2017
+# Last Change: May 18, 2018
 # URL: https://linux-utils.readthedocs.io
 
 """
@@ -66,6 +66,7 @@ setup(name="linux-utils",
       url='https://linux-utils.readthedocs.io',
       author="Peter Odding",
       author_email='peter@peterodding.com',
+      license='MIT',
       packages=find_packages(),
       entry_points=dict(console_scripts=[
           'cryptdisks-start-fallback = linux_utils.cli:cryptdisks_start_cli',
@@ -73,7 +74,7 @@ setup(name="linux-utils",
       ]),
       install_requires=get_requirements('requirements.txt'),
       classifiers=[
-          'Development Status :: 3 - Alpha',
+          'Development Status :: 4 - Beta',
           'Intended Audience :: Developers',
           'Intended Audience :: System Administrators',
           'License :: OSI Approved :: MIT License',
@@ -91,4 +92,6 @@ setup(name="linux-utils",
           'Topic :: Software Development',
           'Topic :: Software Development :: Libraries :: Python Modules',
           'Topic :: System :: Systems Administration',
+          'Topic :: Terminals',
+          'Topic :: Utilities',
       ])
