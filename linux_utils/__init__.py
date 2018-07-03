@@ -1,7 +1,7 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 24, 2017
+# Last Change: July 3, 2018
 # URL: https://linux-utils.readthedocs.io
 
 """Linux system administration tools for Python."""
@@ -24,7 +24,7 @@ __all__ = (
     'coerce_size',
 )
 
-__version__ = '0.5'
+__version__ = '0.6'
 """Semi-standard module versioning."""
 
 

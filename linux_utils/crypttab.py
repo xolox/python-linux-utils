@@ -72,6 +72,15 @@ def parse_crypttab(filename='/etc/crypttab', context=None):
         key_file='none',
         options=['luks', 'discard'],
     )
+
+    .. versionchanged:: 0.6
+       It is not an error when `filename` doesn't exist, because of my
+       experience that ``/etc/crypttab`` doesn't exist in default Debian and
+       Ubuntu installations (unless that system was specifically set up with
+       root disk encryption using the installation wizard). This used to raise
+       an exception, but this was changed in `release 0.6`_.
+
+    .. _release 0.6: https://linux-utils.readthedocs.io/changelog.html#release-0-6-2018-07-03
     """
     context = coerce_context(context)
     if context.is_file(filename):

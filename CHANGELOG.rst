@@ -11,6 +11,34 @@ to `semantic versioning`_.
 .. _Keep a Changelog: http://keepachangelog.com/
 .. _semantic versioning: http://semver.org/
 
+`Release 0.6`_ (2018-07-03)
+---------------------------
+
+- **Bug fix:** Don't raise an exception in ``parse_crypttab()`` when
+  ``/etc/crypttab`` doesn't exist. I ran into the exception that used to be
+  raised when I ran ``upgrade-remote-system`` (in debuntu-tools_) against a
+  server without any encrypted filesystems and was unpleasantly surprised that
+  my "upgrade && reboot && cleanup kernels" had aborted halfway 😇.
+
+- **Miscellaneous changes:** (lots of them)
+
+  - Added this changelog and restructured the documentation.
+  - Integrated ``property_manager.sphinx`` to improve documentation.
+  - Minor changes to the ``setup.py`` script:
+
+    - Added the ``license='MIT'`` key.
+    - Changed alpha trove classifier to beta.
+    - Added some additional trove classifiers.
+
+  - Added usage messages of ``cryptdisks-start-fallback`` and
+    ``cryptdisks-stop-fallback`` to readme.
+  - Changed ``MANIFEST.in`` to include documentation in source distributions.
+  - Minor improvements to documentation of ``linux_utils.cli`` module.
+  - Bumped copyright to 2018.
+
+
+.. _Release 0.6: https://github.com/xolox/python-linux-utils/compare/0.5...0.6
+
 `Release 0.5`_ (2017-06-24)
 ---------------------------
 
