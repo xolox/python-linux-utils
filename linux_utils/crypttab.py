@@ -84,7 +84,7 @@ def parse_crypttab(filename='/etc/crypttab', context=None):
                 logger.warning("Ignoring line %i in %s because I couldn't parse it!",
                                entry.line_number, entry.configuration_file)
     else:
-        logger.notice("No encrypted filesystem found (the file %s doesn't exist).", filename)
+        logger.notice("No encrypted filesystems found on %s because %s doesn't exist.", context, filename)
 
 
 class EncryptedFileSystemEntry(TabFileEntry):
