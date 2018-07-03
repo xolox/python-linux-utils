@@ -1,7 +1,7 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: May 18, 2018
+# Last Change: July 3, 2018
 # URL: https://linux-utils.readthedocs.io
 
 """
@@ -62,7 +62,7 @@ def cryptdisks_start_cli():
             # terminal.
             warning("Error: %s", e)
             sys.exit(1)
-        except Exception as e:
+        except Exception:
             # Any other exceptions are logged to the terminal and system log.
             logger.exception("Aborting due to exception!")
             sys.exit(1)
@@ -96,7 +96,7 @@ def cryptdisks_stop_cli():
             # terminal.
             warning("Error: %s", e)
             sys.exit(1)
-        except Exception as e:
+        except Exception:
             # Any other exceptions are logged to the terminal and system log.
             logger.exception("Aborting due to exception!")
             sys.exit(1)
