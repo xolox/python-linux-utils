@@ -35,7 +35,7 @@ from property_manager import lazy_property
 from verboselogs import VerboseLogger
 
 # Modules included in our package.
-from linux_utils import coerce_device_file
+from linux_utils import coerce_context, coerce_device_file
 from linux_utils.tabfile import TabFileEntry, parse_tab_file
 
 # Public identifiers that require documentation.
@@ -73,6 +73,7 @@ def parse_crypttab(filename='/etc/crypttab', context=None):
         options=['luks', 'discard'],
     )
     """
+    context = coerce_context(context)
     if context.is_file(filename):
         for entry in parse_tab_file(filename=filename, context=context):
             if len(entry.tokens) >= 4:
