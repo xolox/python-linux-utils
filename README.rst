@@ -55,7 +55,7 @@ subset of the available encryption options.
 cryptdisks-start-fallback
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. A DRY solution to avoid duplication of the `remote-fde-client --help' text:
+.. A DRY solution to avoid duplication of the `cryptdisks-start-fallback --help' text:
 ..
 .. [[[cog
 .. import cog
@@ -75,10 +75,10 @@ encryption options.
 
 .. [[[end]]]
 
-cryptdisks-stop fallback
+cryptdisks-stop-fallback
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. A DRY solution to avoid duplication of the `remote-fde-client --help' text:
+.. A DRY solution to avoid duplication of the `cryptdisks-stop-fallback --help' text:
 ..
 .. [[[cog
 .. import cog
