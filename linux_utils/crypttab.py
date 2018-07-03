@@ -1,7 +1,7 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 24, 2017
+# Last Change: July 3, 2018
 # URL: https://linux-utils.readthedocs.io
 
 """
@@ -27,12 +27,12 @@ specifically:
 """
 
 # Standard library modules.
-import logging
 import os
 
 # External dependencies.
 from humanfriendly.text import split
 from property_manager import lazy_property
+from verboselogs import VerboseLogger
 
 # Modules included in our package.
 from linux_utils import coerce_device_file
@@ -46,7 +46,7 @@ __all__ = (
 )
 
 # Initialize a logger for this module.
-logger = logging.getLogger(__name__)
+logger = VerboseLogger(__name__)
 
 
 def parse_crypttab(filename='/etc/crypttab', context=None):
@@ -73,14 +73,17 @@ def parse_crypttab(filename='/etc/crypttab', context=None):
         options=['luks', 'discard'],
     )
     """
-    for entry in parse_tab_file(filename=filename, context=context):
-        if len(entry.tokens) >= 4:
-            # Transform the object into our type.
-            entry.__class__ = EncryptedFileSystemEntry
-            yield entry
-        elif len(entry.tokens) > 0:
-            logger.warning("Ignoring line %i in %s because I couldn't parse it!",
-                           entry.line_number, entry.configuration_file)
+    if context.is_file(filename):
+        for entry in parse_tab_file(filename=filename, context=context):
+            if len(entry.tokens) >= 4:
+                # Transform the object into our type.
+                entry.__class__ = EncryptedFileSystemEntry
+                yield entry
+            elif len(entry.tokens) > 0:
+                logger.warning("Ignoring line %i in %s because I couldn't parse it!",
+                               entry.line_number, entry.configuration_file)
+    else:
+        logger.notice("No encrypted filesystem found (the file %s doesn't exist).", filename)
 
 
 class EncryptedFileSystemEntry(TabFileEntry):
