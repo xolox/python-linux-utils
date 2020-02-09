@@ -99,6 +99,8 @@ encryption options.
 
 .. [[[end]]]
 
+.. _History:
+
 History
 -------
 
@@ -107,25 +109,25 @@ Back in 2015 I wrote some Python code to parse the Linux configuration files
 forward to 2017 and I found myself wanting to use the same functionality
 in rsync-system-backup_. Three options presented themselves to me:
 
-1. **Copy/paste the relevant code.** Having to maintain the same code in
-   multiple places causes lower quality code because having to duplicate the
-   effort of writing documentation, developing tests and fixing bugs is a very
-   demotivating endeavor.
+**Copy/paste the relevant code**
+ Having to maintain the same code in multiple places causes lower quality code
+ because having to duplicate the effort of writing documentation, developing
+ tests and fixing bugs is a very demotivating endeavor. In fact sometime in
+ 2016 I *did* copy/paste parts of this code into a project at work, because I
+ needed similar functionality there. Of course since then the two
+ implementations have started diverging 😛.
 
-   In fact sometime in 2016 I *did* copy/paste parts of this code into a
-   project at work, because I needed similar functionality there. Of course
-   since then the two implementations have started diverging 😛.
+**Make crypto-drive-manager a dependency of rsync-system-backup**
+ Although this approach is less ugly than copy/pasting the code, it still isn't
+ exactly elegant because the two projects have nothing to do with each other
+ apart from working with LUKS encrypted disks on Linux.
 
-2. **Make crypto-drive-manager a dependency of rsync-system-backup.** Although
-   this approach is less ugly than copy/pasting the code, it still isn't
-   exactly elegant because the two projects have nothing to do with each other
-   apart from working with LUKS encrypted disks on Linux.
-
-3. **Extract the functionality into a new package.** In my opinion this is
-   clearly the most elegant approach, unfortunately it also requires the most
-   work from me 😇. On the plus side I'm publishing the new package with a test
-   suite which means less untested code remains in crypto-drive-manager_ (which
-   doesn't have a test suite at the time of writing).
+**Extract the functionality into a new package**
+ In my opinion this is clearly the most elegant approach, unfortunately it also
+ requires the most work from me 😇. On the plus side I'm publishing the new
+ package with a test suite which means less untested code remains in
+ crypto-drive-manager_ (which doesn't have a test suite at the time of
+ writing).
 
 While extracting the code I shortly considered integrating the functionality
 into debuntu-tools_, however the `/etc/fstab`_ and `/etc/crypttab`_ parsing
