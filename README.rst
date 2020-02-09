@@ -149,7 +149,7 @@ License
 
 This software is licensed under the `MIT license`_.
 
-© 2018 Peter Odding.
+© 2020 Peter Odding.
 
 .. _/etc/crypttab: https://manpages.debian.org/crypttab
 .. _/etc/fstab: https://manpages.debian.org/fstab
