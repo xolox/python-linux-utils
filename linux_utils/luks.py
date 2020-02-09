@@ -1,7 +1,7 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 24, 2017
+# Last Change: February 9, 2020
 # URL: https://linux-utils.readthedocs.io
 
 """
@@ -11,7 +11,7 @@ The functions in this module serve two distinct purposes:
 
 **Low level Python API for cryptsetup**
  The following functions and class provide a low level Python API for the basic
- functionality of cryptsetup_:
+ functionality of :man:`cryptsetup`:
 
  - :func:`create_image_file()`
  - :func:`generate_key_file()`
@@ -25,9 +25,9 @@ The functions in this module serve two distinct purposes:
  and rsync-system-backup_.
 
 **Python implementation of cryptdisks_start and cryptdisks_stop**
- The command line programs cryptdisks_start_ and cryptdisks_stop_ are easy to
- use wrappers for cryptsetup_ that parse `/etc/crypttab`_ to find the
- information they need.
+ The command line programs :man:`cryptdisks_start` and :man:`cryptdisks_stop`
+ are easy to use wrappers for :man:`cryptsetup` that parse `/etc/crypttab`_ to
+ find the information they need.
 
  The nice thing about `/etc/crypttab`_ is that it provides a central place to
  configure the names of encrypted filesystems, so that you can refer to a
@@ -44,12 +44,9 @@ The functions in this module serve two distinct purposes:
  distributions that don't offer these programs can still be supported by
  projects like crypto-drive-manager_ and rsync-system-backup_.
 
-.. _cryptsetup: https://manpages.debian.org/cryptsetup
 .. _LUKS: https://en.wikipedia.org/wiki/Linux_Unified_Key_Setup
 .. _crypto-drive-manager: https://pypi.python.org/pypi/crypto-drive-manager
 .. _rsync-system-backup: https://pypi.python.org/pypi/rsync-system-backup
-.. _cryptdisks_start: https://manpages.debian.org/cryptdisks_start
-.. _cryptdisks_stop: https://manpages.debian.org/cryptdisks_stop
 .. _/etc/crypttab: https://manpages.debian.org/crypttab
 .. _Debian: https://en.wikipedia.org/wiki/Debian
 """
@@ -220,7 +217,7 @@ def lock_filesystem(target, context=None):
 
 def cryptdisks_start(target, context=None):
     """
-    Execute cryptdisks_start_ or emulate its functionality.
+    Execute :man:`cryptdisks_start` or emulate its functionality.
 
     :param target: The mapped device name (a string).
     :param context: An execution context created by :mod:`executor.contexts`
@@ -255,7 +252,7 @@ def cryptdisks_start(target, context=None):
 
 def cryptdisks_stop(target, context=None):
     """
-    Execute cryptdisks_stop_ or emulate its functionality.
+    Execute :man:`cryptdisks_stop` or emulate its functionality.
 
     :param target: The mapped device name (a string).
     :param context: An execution context created by :mod:`executor.contexts`
@@ -263,8 +260,6 @@ def cryptdisks_stop(target, context=None):
     :raises: :exc:`~executor.ExternalCommandFailed` when a command fails,
              :exc:`~exceptions.ValueError` when no entry in `/etc/crypttab`_
              matches `target`.
-
-    .. _cryptdisks_stop: https://manpages.debian.org/cryptdisks_stop
     """
     context = coerce_context(context)
     logger.debug("Checking if `cryptdisks_stop' program is installed ..")

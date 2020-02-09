@@ -1,5 +1,5 @@
 coloredlogs >= 7.0
 executor >= 16.0.1
-humanfriendly >= 3.6
+humanfriendly >= 5.0
 property-manager >= 2.3
 six >= 1.10.0
