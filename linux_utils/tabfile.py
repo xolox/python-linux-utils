@@ -1,7 +1,7 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 24, 2017
+# Last Change: February 9, 2020
 # URL: https://linux-utils.readthedocs.io
 
 """Generic parsing of Linux configuration files like ``/etc/fstab`` and ``/etc/crypttab``."""
@@ -27,8 +27,7 @@ def parse_tab_file(filename, context=None, encoding='UTF-8'):
     Parse a Linux configuration file like ``/etc/fstab`` or ``/etc/crypttab``.
 
     :param filename: The absolute pathname of the file to parse (a string).
-    :param context: An execution context created by :mod:`executor.contexts`
-                    (coerced using :func:`.coerce_context()`).
+    :param context: See :func:`.coerce_context()` for details.
     :param encoding: The name of the text encoding of the file (a string).
     :returns: A generator of :class:`TabFileEntry` objects.
 

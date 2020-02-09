@@ -1,7 +1,7 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: July 3, 2018
+# Last Change: February 9, 2020
 # URL: https://linux-utils.readthedocs.io
 
 """Linux system administration tools for Python."""
@@ -30,13 +30,26 @@ __version__ = '0.6'
 
 def coerce_context(value):
     """
-    Coerce a value to an execution context.
+    Coerce the given value to an execution context.
 
     :param value: The value to coerce (an execution context created
                   by :mod:`executor.contexts` or :data:`None`).
     :returns: An execution context created by :mod:`executor.contexts`.
     :raises: :exc:`~exceptions.ValueError` when `value` isn't :data:`None`
              but also isn't a valid execution context.
+
+    This function is used throughout the modules in the :mod:`linux_utils`
+    package to abstract away the details of external command execution using
+    `dependency injection`_:
+
+    - If no execution context is provided (`value` is :data:`None`)
+      :class:`executor.contexts.LocalContext` is used by default.
+
+    - Callers can provide :class:`executor.contexts.RemoteContext` in
+      which case the :mod:`linux_utils` package seamlessly adapts to
+      command execution on a remote system over :man:`ssh`.
+
+    .. _dependency injection: https://en.wikipedia.org/wiki/Dependency_injection
     """
     if value is None:
         value = LocalContext()

@@ -89,8 +89,7 @@ def create_image_file(filename, size, context=None):
 
     :param filename: The pathname of the image file (a string).
     :param size: How large the image file should be (see :func:`.coerce_size()`).
-    :param context: An execution context created by :mod:`executor.contexts`
-                    (coerced using :func:`.coerce_context()`).
+    :param context: See :func:`.coerce_context()` for details.
     :raises: :exc:`~exceptions.ValueError` when `size` is invalid,
              :exc:`~executor.ExternalCommandFailed` when the command fails.
     """
@@ -108,8 +107,7 @@ def generate_key_file(filename, size=DEFAULT_KEY_SIZE, context=None):
     :param filename: The pathname of the key file (a string).
     :param size: How large the key file should be (see :func:`.coerce_size()`,
                  defaults to :data:`DEFAULT_KEY_SIZE`).
-    :param context: An execution context created by :mod:`executor.contexts`
-                    (coerced using :func:`.coerce_context()`).
+    :param context: See :func:`.coerce_context()` for details.
     :raises: :exc:`~executor.ExternalCommandFailed` when the command fails.
     """
     context = coerce_context(context)
@@ -134,8 +132,7 @@ def create_encrypted_filesystem(device_file, key_file=None, context=None):
     :param device_file: The pathname of the block special device or file (a string).
     :param key_file: The pathname of the key file used to encrypt the
                      filesystem (a string or :data:`None`).
-    :param context: An execution context created by :mod:`executor.contexts`
-                    (coerced using :func:`.coerce_context()`).
+    :param context: See :func:`.coerce_context()` for details.
     :raises: :exc:`~executor.ExternalCommandFailed` when the command fails.
 
     If no `key_file` is given the operator is prompted to choose a password.
@@ -164,8 +161,7 @@ def unlock_filesystem(device_file, target, key_file=None, options=None, context=
                     :data:`None` (in which case the default options are used).
                     Currently 'discard', 'readonly' and 'tries' are the only
                     supported options (other options are silently ignored).
-    :param context: An execution context created by :mod:`executor.contexts`
-                    (coerced using :func:`.coerce_context()`).
+    :param context: See :func:`.coerce_context()` for details.
     :raises: :exc:`~executor.ExternalCommandFailed` when the command fails.
 
     If no `key_file` is given the operator is prompted to enter a password.
@@ -205,8 +201,7 @@ def lock_filesystem(target, context=None):
     Lock a currently unlocked LUKS filesystem.
 
     :param target: The mapped device name (a string).
-    :param context: An execution context created by :mod:`executor.contexts`
-                    (coerced using :func:`.coerce_context()`).
+    :param context: See :func:`.coerce_context()` for details.
     :raises: :exc:`~executor.ExternalCommandFailed` when the command fails.
     """
     context = coerce_context(context)
@@ -220,8 +215,7 @@ def cryptdisks_start(target, context=None):
     Execute :man:`cryptdisks_start` or emulate its functionality.
 
     :param target: The mapped device name (a string).
-    :param context: An execution context created by :mod:`executor.contexts`
-                    (coerced using :func:`.coerce_context()`).
+    :param context: See :func:`.coerce_context()` for details.
     :raises: :exc:`~executor.ExternalCommandFailed` when a command fails,
              :exc:`~exceptions.ValueError` when no entry in `/etc/crypttab`_
              matches `target`.
@@ -255,8 +249,7 @@ def cryptdisks_stop(target, context=None):
     Execute :man:`cryptdisks_stop` or emulate its functionality.
 
     :param target: The mapped device name (a string).
-    :param context: An execution context created by :mod:`executor.contexts`
-                    (coerced using :func:`.coerce_context()`).
+    :param context: See :func:`.coerce_context()` for details.
     :raises: :exc:`~executor.ExternalCommandFailed` when a command fails,
              :exc:`~exceptions.ValueError` when no entry in `/etc/crypttab`_
              matches `target`.

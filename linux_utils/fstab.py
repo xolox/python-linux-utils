@@ -39,8 +39,7 @@ def find_mounted_filesystems(filename='/proc/mounts', context=None):
 
     :param filename: The absolute pathname of the file to parse (a string,
                      defaults to ``/proc/mounts``).
-    :param context: An execution context created by :mod:`executor.contexts`
-                    (coerced using :func:`.coerce_context()`).
+    :param context: See :func:`.coerce_context()` for details.
     :returns: A generator of :class:`FileSystemEntry` objects.
 
     This function is a trivial wrapper for :func:`parse_fstab()` that instructs
@@ -81,8 +80,7 @@ def parse_fstab(filename='/etc/fstab', context=None):
 
     :param filename: The absolute pathname of the file to parse (a string,
                      defaults to `/etc/fstab`_).
-    :param context: An execution context created by :mod:`executor.contexts`
-                    (coerced using :func:`.coerce_context()`).
+    :param context: See :func:`.coerce_context()` for details.
     :returns: A generator of :class:`FileSystemEntry` objects.
 
     Here's an example:

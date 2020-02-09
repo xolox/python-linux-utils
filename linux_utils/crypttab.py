@@ -1,7 +1,7 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: July 3, 2018
+# Last Change: February 9, 2020
 # URL: https://linux-utils.readthedocs.io
 
 """
@@ -55,8 +55,7 @@ def parse_crypttab(filename='/etc/crypttab', context=None):
 
     :param filename: The absolute pathname of the file to parse (a string,
                      defaults to ``/etc/crypttab``).
-    :param context: An execution context created by :mod:`executor.contexts`
-                    (coerced using :func:`.coerce_context()`).
+    :param context: See :func:`.coerce_context()` for details.
     :returns: A generator of :class:`EncryptedFileSystemEntry` objects.
 
     Here's an example:
