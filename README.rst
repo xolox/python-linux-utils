@@ -14,6 +14,7 @@ following functionality is currently implemented:
 - Parsing of the `/etc/fstab`_ and `/etc/crypttab`_ configuration files.
 - A basic Python API for cryptsetup_ and a Python implementation of
   cryptdisks_start_ and cryptdisks_stop_ (with a command line interface).
+- Atomic filesystem operations for Linux in Python.
 
 The package is currently tested on cPython 2.7, 3.4, 3.5, 3.6, 3.7 and PyPy
 (2.7) on Ubuntu Linux (using `Travis CI`_).
@@ -35,7 +36,7 @@ There's actually a multitude of ways to install Python packages (e.g. the `per
 user site-packages directory`_, `virtual environments`_ or just installing
 system wide) and I have no intention of getting into that discussion here, so
 if this intimidates you then read up on your options before returning to these
-instructions ;-).
+instructions 😉.
 
 Usage
 -----
@@ -113,7 +114,7 @@ in rsync-system-backup_. Three options presented themselves to me:
 
    In fact sometime in 2016 I *did* copy/paste parts of this code into a
    project at work, because I needed similar functionality there. Of course
-   since then the two implementations have started diverging :-p.
+   since then the two implementations have started diverging 😛.
 
 2. **Make crypto-drive-manager a dependency of rsync-system-backup.** Although
    this approach is less ugly than copy/pasting the code, it still isn't
@@ -122,9 +123,9 @@ in rsync-system-backup_. Three options presented themselves to me:
 
 3. **Extract the functionality into a new package.** In my opinion this is
    clearly the most elegant approach, unfortunately it also requires the most
-   work from me :-). On the plus side I'm publishing the new package with a
-   test suite which means less untested code remains in crypto-drive-manager_
-   (which doesn't have a test suite at the time of writing).
+   work from me 😇. On the plus side I'm publishing the new package with a test
+   suite which means less untested code remains in crypto-drive-manager_ (which
+   doesn't have a test suite at the time of writing).
 
 While extracting the code I shortly considered integrating the functionality
 into debuntu-tools_, however the `/etc/fstab`_ and `/etc/crypttab`_ parsing
@@ -132,9 +133,9 @@ isn't specific to Debian or Ubuntu at all and debuntu-tools_ has several
 dependencies that aren't relevant to Linux configuration file parsing.
 
 Since then it has become clear that this was a good choice (not merging the
-functionality into debuntu-tools_) because the package now provides a Python
+functionality into debuntu-tools_) because `linux-utils` now provides a Python
 implementation of cryptdisks_start_ and cryptdisks_stop_, which is mostly
-useful on Linux systems that *aren't* based on Debian :-).
+useful on Linux systems that *aren't* based on Debian 🙂.
 
 Contact
 -------
