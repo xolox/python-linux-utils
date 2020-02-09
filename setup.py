@@ -3,7 +3,7 @@
 # Setup script for the `linux-utils' package.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: May 18, 2018
+# Last Change: February 9, 2020
 # URL: https://linux-utils.readthedocs.io
 
 """
@@ -81,7 +81,6 @@ setup(name="linux-utils",
           'Operating System :: POSIX :: Linux',
           'Programming Language :: Python',
           'Programming Language :: Python :: 2',
-          'Programming Language :: Python :: 2.6',
           'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',
           'Programming Language :: Python :: 3.4',
