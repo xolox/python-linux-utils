@@ -11,6 +11,30 @@ to `semantic versioning`_.
 .. _Keep a Changelog: http://keepachangelog.com/
 .. _semantic versioning: http://semver.org/
 
+`Release 0.7`_ (2020-02-09)
+---------------------------
+
+**Significant changes:**
+
+- Added :mod:`linux_utils.network` module (simple network location awareness).
+
+- Updated :func:`~linux_utils.fstab.parse_fstab()` documentation to reflect
+  difference between :attr:`~linux_utils.fstab.FileSystemEntry.device` and
+  :attr:`~linux_utils.fstab.FileSystemEntry.device_file`.
+
+- Stop testing on Python 2.6, start testing on Python 3.7.
+
+**Miscellaneous changes:**
+
+- Improved the :func:`~linux_utils.coerce_context()` documentation.
+- Improved formatting of :ref:`history` section,
+  removed duplication between readme and changelog.
+- Start using ``:man:`...``` role in online documentation.
+- Switch to Python 3 in ``Makefile`` (local development).
+- Switch to console highlighting in readme.
+
+.. _Release 0.7: https://github.com/xolox/python-linux-utils/compare/0.6...0.7
+
 `Release 0.6`_ (2018-07-03)
 ---------------------------
 

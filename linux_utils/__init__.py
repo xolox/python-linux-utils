@@ -4,7 +4,12 @@
 # Last Change: February 9, 2020
 # URL: https://linux-utils.readthedocs.io
 
-"""Linux system administration tools for Python."""
+"""
+Linux system administration tools for Python.
+
+The :mod:`linux_utils` module contains generic functions
+to be used by the other modules in the package.
+"""
 
 # Standard library modules.
 import numbers
@@ -24,7 +29,7 @@ __all__ = (
     'coerce_size',
 )
 
-__version__ = '0.6'
+__version__ = '0.7'
 """Semi-standard module versioning."""
 
 
