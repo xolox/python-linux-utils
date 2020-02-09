@@ -1,7 +1,7 @@
 # linux-utils: Linux system administration tools for Python.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 24, 2017
+# Last Change: February 9, 2020
 # URL: https://linux-utils.readthedocs.io
 
 """
@@ -90,15 +90,19 @@ def parse_fstab(filename='/etc/fstab', context=None):
     >>> from linux_utils.fstab import parse_fstab
     >>> next(e for e in parse_fstab() if e.mount_point == '/')
     FileSystemEntry(
-        configuration_file='/etc/fstab',
-        line_number=8,
-        device_file='UUID=7801a1c2-7ad7-4c0b-9fbb-2a47ae802f71',
-        mount_point='/',
-        vfs_type='ext4',
-        options=['errors=remount-ro'],
-        dump_frequency=0,
-        check_order=1,
+      check_order=1,
+      configuration_file='/etc/fstab',
+      device='UUID=147f7d18-e0c9-499c-8791-401642581b90',
+      device_file='/dev/disk/by-uuid/147f7d18-e0c9-499c-8791-401642581b90',
+      dump_frequency=0,
+      line_number=11,
+      mount_point='/',
+      options=['defaults', 'errors=remount-ro', 'discard', 'relatime', 'data=ordered'],
+      vfs_type='ext4',
     )
+
+    Note that some miscellaneous :class:`FileSystemEntry` properties
+    were omitted from the example above to make it more concise.
     """
     for entry in parse_tab_file(filename=filename, context=context):
         if len(entry.tokens) >= 4:
