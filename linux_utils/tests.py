@@ -1,7 +1,7 @@
 # Test suite for the `linux-utils' Python package.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: June 24, 2017
+# Last Change: February 9, 2020
 # URL: https://linux-utils.readthedocs.io
 
 """Test suite for the `linux-utils` package."""
@@ -17,7 +17,8 @@ import tempfile
 # External dependencies.
 from executor import ExternalCommandFailed, execute
 from executor.contexts import LocalContext
-from humanfriendly.testing import TemporaryDirectory, TestCase, run_cli
+from humanfriendly.text import dedent
+from humanfriendly.testing import MockedProgram, TemporaryDirectory, TestCase, run_cli
 from mock import MagicMock
 
 # The module we're testing.
@@ -34,6 +35,13 @@ from linux_utils.luks import (
     cryptdisks_stop,
     lock_filesystem,
     unlock_filesystem,
+)
+from linux_utils.network import (
+    determine_network_location,
+    find_gateway_ip,
+    find_gateway_mac,
+    find_mac_address,
+    have_internet_connection,
 )
 from linux_utils.tabfile import parse_tab_file
 
@@ -401,3 +409,66 @@ class LinuxUtilsTestCase(TestCase):
         for fallback in cryptdisks_start_cli, cryptdisks_stop_cli:
             returncode, output = run_cli(fallback, TEST_UNKNOWN_TARGET, merged=True)
             assert returncode != 0
+
+    def test_determine_network_location(self):
+        """Test :func:`linux_utils.network.determine_network_location()`."""
+        with self.mock_arp, self.mock_ip:
+            # Make sure the happy path works as intended.
+            assert determine_network_location(home=['80:34:58:ad:6c:f5']) == 'home'
+            # Make sure nothing bad happens when we're not on a known network.
+            assert determine_network_location() is None
+
+    def test_find_gateway_ip(self):
+        """Test :func:`linux_utils.network.find_gateway_ip()`."""
+        with self.mock_ip:
+            assert find_gateway_ip() == '192.168.1.1'
+
+    def test_find_gateway_mac(self):
+        """Test :func:`linux_utils.network.find_gateway_mac()`."""
+        with self.mock_arp, self.mock_ip:
+            assert find_gateway_mac() == '80:34:58:ad:6c:f5'
+
+    def test_find_mac_address(self):
+        """Test :func:`linux_utils.network.find_mac_address()`."""
+        with self.mock_arp:
+            assert find_mac_address('192.168.1.4') == '4b:21:f5:49:88:85'
+
+    def test_have_internet_connection(self):
+        """Test :func:`linux_utils.network.have_internet_connection().`"""
+        with MockedProgram(name='ping', returncode=0):
+            assert have_internet_connection() is True
+        with MockedProgram(name='ping', returncode=1):
+            assert have_internet_connection() is False
+
+    @property
+    def mock_arp(self):
+        """Mocked ``arp`` program."""
+        return MockedProgram(name='arp', script=dedent("""
+            cat << EOF
+            Address                  HWtype  HWaddress           Flags Mask            Iface
+            192.168.1.4              ether   4b:21:f5:49:88:85   C                     wlp3s0
+            192.168.3.28             ether   3d:a6:19:62:9a:83   C                     wlp3s0
+            192.168.3.5              ether   c5:4c:8d:56:25:0c   C                     wlp3s0
+            192.168.1.1              ether   80:34:58:ad:6c:f5   C                     wlp3s0
+            192.168.3.2              ether   20:22:a0:22:0c:db   C                     wlp3s0
+            192.168.1.12             ether   ad:12:75:46:e9:70   C                     wlp3s0
+            192.168.3.6              ether   08:33:c7:ef:f7:27   C                     wlp3s0
+            192.168.1.11             ether   c9:0e:95:24:68:31   C                     wlp3s0
+            192.168.3.4              ether   e7:e6:2c:3b:bc:8a   C                     wlp3s0
+            192.168.3.3              ether   72:d7:d3:2c:54:93   C                     wlp3s0
+            192.168.1.6              ether   95:ef:85:cf:d3:36   C                     wlp3s0
+            192.168.3.7              ether   65:c0:be:40:cd:31   C                     wlp3s0
+            EOF
+        """))
+
+    @property
+    def mock_ip(self):
+        """Mocked ``ip route show`` program."""
+        return MockedProgram(name='ip', script=dedent("""
+            cat << EOF
+            default via 192.168.1.1 dev wlp3s0 proto dhcp metric 600
+            169.254.0.0/16 dev virbr0 scope link metric 1000 linkdown
+            192.168.0.0/16 dev wlp3s0 proto kernel scope link src 192.168.2.214 metric 600
+            192.168.122.0/24 dev virbr0 proto kernel scope link src 192.168.122.1 linkdown
+            EOF
+        """))

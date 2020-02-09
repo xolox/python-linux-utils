@@ -15,6 +15,7 @@ following functionality is currently implemented:
 - A basic Python API for cryptsetup_ and a Python implementation of
   cryptdisks_start_ and cryptdisks_stop_ (with a command line interface).
 - Atomic filesystem operations for Linux in Python.
+- Simple network location awareness / discovery.
 
 The package is currently tested on cPython 2.7, 3.4, 3.5, 3.6, 3.7 and PyPy
 (2.7) on Ubuntu Linux (using `Travis CI`_).

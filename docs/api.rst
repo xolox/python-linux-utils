@@ -45,6 +45,12 @@ the `linux-utils` package.
 .. automodule:: linux_utils.luks
    :members:
 
+:mod:`linux_utils.network`
+--------------------------
+
+.. automodule:: linux_utils.network
+   :members:
+
 :mod:`linux_utils.tabfile`
 --------------------------
 
