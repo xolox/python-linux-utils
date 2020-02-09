@@ -7,6 +7,7 @@
 PACKAGE_NAME = linux-utils
 WORKON_HOME ?= $(HOME)/.virtualenvs
 VIRTUAL_ENV ?= $(WORKON_HOME)/$(PACKAGE_NAME)
+INTERPRETER ?= python3
 PATH := $(VIRTUAL_ENV)/bin:$(PATH)
 MAKE := $(MAKE) --no-print-directory
 SHELL = bash
@@ -29,8 +30,7 @@ default:
 
 install:
 	@test -d "$(VIRTUAL_ENV)" || mkdir -p "$(VIRTUAL_ENV)"
-	@test -x "$(VIRTUAL_ENV)/bin/python" || virtualenv --quiet "$(VIRTUAL_ENV)"
-	@test -x "$(VIRTUAL_ENV)/bin/pip" || easy_install pip
+	@test -x "$(VIRTUAL_ENV)/bin/python" || virtualenv --python=$(INTERPRETER) --quiet "$(VIRTUAL_ENV)"
 	@pip install --quiet --requirement=requirements.txt
 	@pip uninstall --yes $(PACKAGE_NAME) &>/dev/null || true
 	@pip install --quiet --no-deps --ignore-installed .
